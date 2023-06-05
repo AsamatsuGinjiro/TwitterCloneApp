@@ -2,12 +2,23 @@ package model;
 
 import java.time.LocalDateTime;
 
+/**----------------------------------------------------------------------*
+ *■■■TweetDtoクラス■■■
+ *概要：DTO（「tweets」テーブル）
+ *----------------------------------------------------------------------**/
 public class TweetDto {
+	
+	//----------------------------------------------------------------
+	//フィールド
+	//----------------------------------------------------------------
 	 private int id;                   //投稿ID（AUTO_INCREMENT）
      private String content;           //投稿本文
      private UserDao user;             //投稿ユーザー
      private LocalDateTime timestamp;  //投稿時間
      
+ 	//----------------------------------------------------------------
+ 	//getter/setter
+ 	//----------------------------------------------------------------
      //投稿IDのgetter/setter
  	 public int getId() {return id;}
  	 public void setId(int id) {this.id = id;}

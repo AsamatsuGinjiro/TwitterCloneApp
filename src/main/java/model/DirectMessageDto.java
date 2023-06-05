@@ -2,13 +2,23 @@ package model;
 
 import java.util.Date;
 
+/**----------------------------------------------------------------------*
+ *■■■DirectMessageDtoクラス■■■
+ *概要：DTO（「direct_messages」テーブル）
+ *----------------------------------------------------------------------**/
 public class DirectMessageDto {
+	//----------------------------------------------------------------
+	//フィールド
+	//----------------------------------------------------------------
     private int     messageId;  //メッセージID（AUTO_INCREMENT）
     private UserDto sender;     //送信者User
     private UserDto recipient;  //受信者User
     private String  message;    //メッセージ本文
     private Date    timestamp;  //送信日時
     
+	//----------------------------------------------------------------
+	//getter/setter
+	//----------------------------------------------------------------
     //メッセージIDのgetter/setter
 	public int getMessageId() {return messageId;}
 	public void setMessageId(int messageId) {this.messageId = messageId;}
