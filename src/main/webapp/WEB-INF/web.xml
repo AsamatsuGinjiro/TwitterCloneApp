@@ -1,1 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="http://java.sun.com/xml/ns/javaee"
+ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+ id="WebApp_ID" version="2.5" >
+	<servlet>
+		<servlet-name>Login</servlet-name>
+		<servlet-class>controller.Login</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Login</servlet-name>
+		<url-pattern>/Login</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>ExecuteLogin</servlet-name>
+		<servlet-class>controller.ExecuteLogin</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ExecuteLogin</servlet-name>
+		<url-pattern>/ExecuteLogin</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>ExecuteLogout</servlet-name>
+		<servlet-class>controller.ExecuteLogout</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ExecuteLogout</servlet-name>
+		<url-pattern>/ExecuteLogout</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Home</servlet-name>
+		<servlet-class>controller.Home</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Home</servlet-name>
+		<url-pattern>/Home</url-pattern>
+	</servlet-mapping>
+</web-app>

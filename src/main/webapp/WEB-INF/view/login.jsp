@@ -1,12 +1,28 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%--
+-------------------------------------------------------------------------------------------------
+■■■ファイル名：login.jsp■■■
+概要：JSP
+詳細：HTML文書（ログイン画面）を出力する。
+-------------------------------------------------------------------------------------------------
+--%>
+
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+  <title>ログイン画面</title>
 </head>
 <body>
-
+  <h1>ログイン画面</h1>
+  <form action="ExecuteLogin" method="post">
+    <p>ユーザーID：<br>
+      <input type="text" name="EMAIL" maxlength="20" id="ID_USER_ID">
+    </p>
+    <p>パスワード：<br>
+      <input type="password" name="PASSWORD" maxlength="20" id="ID_PASSWORD"> 
+    </p>
+    <input type="submit" value="ログイン" id="ID_SUBMIT">
+  </form>
+  <script type="text/javascript" src="js/login.js"></script>
 </body>
 </html>
