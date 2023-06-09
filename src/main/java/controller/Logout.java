@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class DirectMessageSurvlet
+ * Servlet implementation class LogoutServlet
  */
-@WebServlet("/DirectMessageSurvlet")
-public class DirectMessageSurvlet extends HttpServlet {
+@WebServlet("/LogoutServlet")
+public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DirectMessageSurvlet() {
+    public Logout() {
         super();
         // TODO Auto-generated constructor stub
     }
