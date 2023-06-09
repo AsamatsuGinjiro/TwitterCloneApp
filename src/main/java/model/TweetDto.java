@@ -13,7 +13,7 @@ public class TweetDto {
 	//----------------------------------------------------------------
 	 private int id;                   //投稿ID（AUTO_INCREMENT）
      private String content;           //投稿本文
-     private UserDao user;             //投稿ユーザー
+     private UserDto user;             //投稿ユーザー
      private LocalDateTime timestamp;  //投稿時間
      
  	//----------------------------------------------------------------
@@ -28,8 +28,8 @@ public class TweetDto {
  	 public void setContent(String content) {this.content = content;}
  	 
  	 //投稿ユーザーのgetter/setter
- 	 public UserDao getUser() {return user;}
- 	 public void setUser(UserDao user) {this.user = user;}
+ 	 public UserDto getUser() {return user;}
+ 	 public void setUser(UserDto user) {this.user = user;}
  	 
  	 //投稿時間のgetter/setter
  	 public LocalDateTime getTimestamp() {return timestamp;}

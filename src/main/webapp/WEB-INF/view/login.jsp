@@ -23,6 +23,7 @@
     </p>
     <input type="submit" value="ログイン" id="ID_SUBMIT">
   </form>
+  <a href="Signup">会員登録はこちら</a>
   <script type="text/javascript" src="js/login.js"></script>
 </body>
 </html>
