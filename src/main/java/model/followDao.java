@@ -5,61 +5,59 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**----------------------------------------------------------------------*
- *■■■UserDaoクラス■■■
- *概要：DAO（「users」テーブル）
- *----------------------------------------------------------------------**/
-public class UserDao {
+public class followDao {
 	//-------------------------------------------
 	//データベースへの接続情報
 	//-------------------------------------------
-	
+
 	//JDBCドライバの相対パス
+	//※バージョンによって変わる可能性があります（MySQL5系の場合は「com.mysql.jdbc.Driver」）
 	String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
 
 	//接続先のデータベース
+	//※データベース名が「test_db」でない場合は該当の箇所を変更してください
 	String JDBC_URL    = "jdbc:mysql://localhost/test_db?characterEncoding=UTF-8&serverTimezone=Japan&useSSL=false";
 
 	//接続するユーザー名
+	//※ユーザー名が「test_user」でない場合は該当の箇所を変更してください
 	String USER_ID     = "test_user";
 
 	//接続するユーザーのパスワード
+	//※パスワードが「test_pass」でない場合は該当の箇所を変更してください
 	String USER_PASS   = "test_pass";
 	
 	//----------------------------------------------------------------
 	//メソッド
 	//----------------------------------------------------------------
-	
 	/**----------------------------------------------------------------------*
-	 *■doLoginメソッド
-	 *概要　：引数のユーザー情報に紐づくユーザーデータを「users」テーブルから抽出する
-	 *引数①：メールアドレス（ユーザー入力）
-	 *引数②：ユーザーパスワード（ユーザー入力）
-	 *戻り値：「users」テーブルから抽出したユーザーデータ（UserDto型）
+	 *■getFollowedUserIdsメソッド
+	 *概要　：フォローしているユーザーの情報を抽出
+	 *引数　：対象のアンケートデータ（UserDto型）
+	 *戻り値：実行結果（真：成功、偽：例外発生）
 	 *----------------------------------------------------------------------**/
-	public UserDto doLogin(String inputEmail, String inputPassWord) {
-		//-------------------------------------------
-		//JDBCドライバのロード
-		//-------------------------------------------
-		try {
-			Class.forName(DRIVER_NAME);       //JDBCドライバをロード＆接続先として指定
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		
+	public List<UserDto> getFollowedUserIds(int userId) {
+    	//-------------------------------------------
+    	//JDBCドライバのロード
+    	//-------------------------------------------
+    	try {
+    		Class.forName(DRIVER_NAME);       //JDBCドライバをロード＆接続先として指定
+    	} catch (ClassNotFoundException e) {
+    		e.printStackTrace();
+    	}
 		//-------------------------------------------
 		//SQL発行
 		//-------------------------------------------
-		
 		//JDBCの接続に使用するオブジェクトを宣言
+		//※finallyブロックでも扱うためtryブロック内で宣言してはいけないことに注意
 		Connection        con = null ;   // Connection（DB接続情報）格納用変数
 		PreparedStatement ps  = null ;   // PreparedStatement（SQL発行用オブジェクト）格納用変数
 		ResultSet         rs  = null ;   // ResultSet（SQL抽出結果）格納用変数
-
-		//抽出データ（UserDto型）格納用変数
-		UserDto dto = new UserDto();
-
+		
+		List<UserDto> followedUserIds = new ArrayList<>();	//抽出データ（UserDto型）格納用変数
+		
 		try {
 			//-------------------------------------------
 			//接続の確立（Connectionオブジェクトの取得）
@@ -72,40 +70,21 @@ public class UserDao {
 
 			//発行するSQL文の生成（SELECT）
 			StringBuffer buf = new StringBuffer();
-			buf.append(" SELECT             ");
-			buf.append("   id,              ");
-			buf.append("   email,           ");
-			buf.append("   password,        ");
-			buf.append("   name,            ");
-			buf.append("   profile_image    ");
-			buf.append(" FROM               ");
-			buf.append("   USERS            ");
-			buf.append(" WHERE              ");
-			buf.append("   email  = ? AND   ");  //第1パラメータ
-			buf.append("   password = ?     ");  //第2パラメータ
+			buf.append(" \"SELECT                 ");
+			buf.append("   followed_user_id       ");
+			buf.append(" FROM                     ");
+			buf.append("   follows                ");
+			buf.append(" WHERE                    ");
+			buf.append("   follower_user_id  = ?  ");
 
 			//PreparedStatement（SQL発行用オブジェクト）を生成＆発行するSQLをセット
 			ps = con.prepareStatement(buf.toString());
 
 			//パラメータをセット
-			ps.setString( 1, inputEmail    );  //第1パラメータ：ユーザーID（ユーザー入力）
-			ps.setString( 2, inputPassWord );  //第2パラメータ：ユーザーパスワード（ユーザー入力）
+			ps.setInt( 1,  userId   );  //第1パラメータ：ユーザーID（ユーザー入力）
 
 			//SQL文の送信＆戻り値としてResultSet（SQL抽出結果）を取得
 			rs = ps.executeQuery();
-
-			//--------------------------------------------------------------------------------
-			//ResultSetオブジェクトからユーザーデータを抽出
-			//--------------------------------------------------------------------------------
-			if (rs.next()) {
-				//ResultSetから1行分のレコード情報をDTOへ登録
-				dto.setId(            rs.getString(    "id"            ));    //ユーザーID
-				dto.setEmail(         rs.getString(    "email"         ));    //メールアドレス
-				dto.setPassword(      rs.getString(    "password"      ));    //パスワード
-				dto.setUsername(      rs.getString(    "name"          ));    //ユーザー名
-				dto.setProfile_image( rs.getString(    "profile_image" ));    //プロフィールイメージ
-			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 
@@ -113,6 +92,7 @@ public class UserDao {
 			//-------------------------------------------
 			//接続の解除
 			//-------------------------------------------
+	
 			//ResultSetオブジェクトの接続解除
 			if (rs != null) {    //接続が確認できている場合のみ実施
 				try {
@@ -130,7 +110,7 @@ public class UserDao {
 					e.printStackTrace();
 				}
 			}
-
+	
 			//Connectionオブジェクトの接続解除
 			if (con != null) {    //接続が確認できている場合のみ実施
 				try {
@@ -140,6 +120,7 @@ public class UserDao {
 				}
 			}
 		}
-		return dto;
+		return followedUserIds;
 	}
 }
+
