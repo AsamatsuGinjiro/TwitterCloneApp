@@ -1,6 +1,6 @@
 package model;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 /**----------------------------------------------------------------------*
  *■■■TweetDtoクラス■■■
@@ -14,7 +14,7 @@ public class TweetDto {
 	 private int id;                   //投稿ID（AUTO_INCREMENT）
      private String content;           //投稿本文
      private UserDto user;             //投稿ユーザー
-     private LocalDateTime timestamp;  //投稿時間
+     private Timestamp time;           //投稿時間
      
  	//----------------------------------------------------------------
  	//getter/setter
@@ -32,6 +32,6 @@ public class TweetDto {
  	 public void setUser(UserDto user) {this.user = user;}
  	 
  	 //投稿時間のgetter/setter
- 	 public LocalDateTime getTimestamp() {return timestamp;}
- 	 public void setTimestamp(LocalDateTime timestamp) {this.timestamp = timestamp;}
+ 	 public Timestamp getTime() {return time;}
+ 	 public void setTime(Timestamp timestamp) {this.time = timestamp;}
 }

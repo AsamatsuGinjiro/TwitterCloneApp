@@ -11,6 +11,7 @@
 		<servlet-name>Login</servlet-name>
 		<url-pattern>/Login</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>ExecuteLogin</servlet-name>
 		<servlet-class>controller.ExecuteLogin</servlet-class>
@@ -19,6 +20,7 @@
 		<servlet-name>ExecuteLogin</servlet-name>
 		<url-pattern>/ExecuteLogin</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>ExecuteLogout</servlet-name>
 		<servlet-class>controller.ExecuteLogout</servlet-class>
@@ -27,6 +29,7 @@
 		<servlet-name>ExecuteLogout</servlet-name>
 		<url-pattern>/ExecuteLogout</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>Home</servlet-name>
 		<servlet-class>controller.Home</servlet-class>
@@ -35,4 +38,14 @@
 		<servlet-name>Home</servlet-name>
 		<url-pattern>/Home</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Logout</servlet-name>
+		<servlet-class>controller.Logout</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Logout</servlet-name>
+		<url-pattern>/Logout</url-pattern>
+	</servlet-mapping>
+
 </web-app>

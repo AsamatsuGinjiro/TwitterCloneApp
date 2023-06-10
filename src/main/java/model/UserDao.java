@@ -99,7 +99,7 @@ public class UserDao {
 			//--------------------------------------------------------------------------------
 			if (rs.next()) {
 				//ResultSetから1行分のレコード情報をDTOへ登録
-				dto.setId(            rs.getString(    "id"            ));    //ユーザーID
+				dto.setId(            rs.getInt(    "id"            ));    //ユーザーID
 				dto.setEmail(         rs.getString(    "email"         ));    //メールアドレス
 				dto.setPassword(      rs.getString(    "password"      ));    //パスワード
 				dto.setUsername(      rs.getString(    "name"          ));    //ユーザー名

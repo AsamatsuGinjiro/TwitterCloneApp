@@ -38,7 +38,7 @@ public class followDao {
 	 *引数　：対象のアンケートデータ（UserDto型）
 	 *戻り値：実行結果（真：成功、偽：例外発生）
 	 *----------------------------------------------------------------------**/
-	public List<UserDto> getFollowedUserIds(int userId) {
+	public List<followDto> getFollowedUserIds(int CurrentUserId) {
     	//-------------------------------------------
     	//JDBCドライバのロード
     	//-------------------------------------------
@@ -56,7 +56,7 @@ public class followDao {
 		PreparedStatement ps  = null ;   // PreparedStatement（SQL発行用オブジェクト）格納用変数
 		ResultSet         rs  = null ;   // ResultSet（SQL抽出結果）格納用変数
 		
-		List<UserDto> followedUserIds = new ArrayList<>();	//抽出データ（UserDto型）格納用変数
+		List<followDto> followingUserIds = new ArrayList<>();	//抽出データ（UserDto型）格納用変数
 		
 		try {
 			//-------------------------------------------
@@ -69,22 +69,30 @@ public class followDao {
 			//-------------------------------------------
 
 			//発行するSQL文の生成（SELECT）
+			//followsテーブルからカレントユーザーのフォローを抽出
 			StringBuffer buf = new StringBuffer();
-			buf.append(" \"SELECT                 ");
-			buf.append("   followed_user_id       ");
-			buf.append(" FROM                     ");
-			buf.append("   follows                ");
-			buf.append(" WHERE                    ");
-			buf.append("   follower_user_id  = ?  ");
-
-			//PreparedStatement（SQL発行用オブジェクト）を生成＆発行するSQLをセット
+			buf.append(" SELECT id,             ");
+			buf.append("        follower_id,    ");
+			buf.append("        following_id    ");
+			buf.append("   FROM follows         ");
+			buf.append("  WHERE follower_id =?; ");
+			
+			//PreparedStatementを生成＆発行するSQLをセット
 			ps = con.prepareStatement(buf.toString());
-
 			//パラメータをセット
-			ps.setInt( 1,  userId   );  //第1パラメータ：ユーザーID（ユーザー入力）
-
-			//SQL文の送信＆戻り値としてResultSet（SQL抽出結果）を取得
+			ps.setInt( 1,  CurrentUserId);  //第1パラメータ：カレントユーザーID（セッション入力）
+			//SQL文の送信＆戻り値としてResultSetを取得
 			rs = ps.executeQuery();
+			
+			// ResultSetオブジェクトからDTOリストに格納
+			while (rs.next()) {
+				followDto dto = new followDto();
+				dto.setId(rs.getInt("id"));
+				dto.setFollower_id(rs.getInt("follower_id"));
+				dto.setFollowing_id(rs.getInt("following_id "));
+				followingUserIds.add(dto);
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 
@@ -120,7 +128,7 @@ public class followDao {
 				}
 			}
 		}
-		return followedUserIds;
+		return followingUserIds;
 	}
 }
 

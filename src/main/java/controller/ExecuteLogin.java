@@ -41,7 +41,7 @@ public class ExecuteLogin extends HttpServlet {
 
 		//セッションからユーザーデータを取得
 		HttpSession session           = request.getSession();
-		UserDto userInfoOnSession = (UserDto)session.getAttribute("LOGIN_INFO");
+		UserDto     userInfoOnSession = (UserDto)session.getAttribute("LOGIN_INFO");
 
 		//ログイン状態によって表示画面を振り分ける
 		if (userInfoOnSession != null) {
@@ -66,7 +66,7 @@ public class ExecuteLogin extends HttpServlet {
 
 				//バリデーションOKの場合
 				//リクエストパラメータからユーザー入力値を取得
-				String email   = request.getParameter("EMAIL");         //リクエストパラメータ（EMAIL）
+				String email    = request.getParameter("EMAIL");        //リクエストパラメータ（EMAIL）
 				String passWord = request.getParameter("PASSWORD");     //リクエストパラメータ（PASSWORD）
 
 				//「users」テーブルからユーザー入力値と合致するユーザーデータ（UserDto型）を抽出

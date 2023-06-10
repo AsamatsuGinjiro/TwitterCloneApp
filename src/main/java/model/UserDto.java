@@ -8,7 +8,7 @@ public class UserDto {
 	//----------------------------------------------------------------
 	//フィールド
 	//----------------------------------------------------------------
-    private String id;             //ユーザーID(@から始まるやつ)
+    private int id;             //ユーザーID(@から始まるやつ)
     private String email;          //メールアドレス
     private String password;       //パスワード
     private String username;       //ユーザー名(表示名)
@@ -20,8 +20,8 @@ public class UserDto {
 	//getter/setter
 	//----------------------------------------------------------------
     //ユーザーIDのgetter/setter
-	public String getId() {return id;}
-	public void setId(String id) {this.id = id;}
+	public int getId() {return id;}
+	public void setId(int id) {this.id = id;}
 	
     //メールアドレスのgetter/setter
 	public String getEmail() {return email;}
