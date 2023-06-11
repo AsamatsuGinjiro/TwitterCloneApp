@@ -18,19 +18,15 @@ public class TweetDao {
 	//-------------------------------------------
 
 	//JDBCドライバの相対パス
-	//※バージョンによって変わる可能性があります（MySQL5系の場合は「com.mysql.jdbc.Driver」）
 	String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
 
 	//接続先のデータベース
-	//※データベース名が「test_db」でない場合は該当の箇所を変更してください
 	String JDBC_URL    = "jdbc:mysql://localhost/test_db?characterEncoding=UTF-8&serverTimezone=Japan&useSSL=false";
 
 	//接続するユーザー名
-	//※ユーザー名が「test_user」でない場合は該当の箇所を変更してください
 	String USER_ID     = "test_user";
 
 	//接続するユーザーのパスワード
-	//※パスワードが「test_pass」でない場合は該当の箇所を変更してください
 	String USER_PASS   = "test_pass";
 	
 	//----------------------------------------------------------------
@@ -64,8 +60,6 @@ public class TweetDao {
 		// 抽出結果格納用DTOリスト
 		List<TweetDto> timelineTweets = new ArrayList<>();
 
-		//実行結果（真：成功、偽：例外発生）格納用変数
-
 		try {
 
 			// -------------------------------------------
@@ -80,13 +74,11 @@ public class TweetDao {
 			// 発行するSQL文の生成（SELECT）
 			// カレントユーザーのHome画面に表示するツイートを取得
 			StringBuffer buf = new StringBuffer();
-			buf.append("   SELECT id,content,user_id,created_at ");
-			buf.append("     FROM tweets                        ");
-			buf.append("    WHERE user_id = ?                   ");
-			buf.append("       OR user_id = ?                   ");
-			buf.append(" ORDER BY created_at;                   ");
-			
-			
+			buf.append("   SELECT t.id ,t.content ,t.user_id ,t.created_at ,u.email,u.password ,u.name ,u.profile_image ");
+			buf.append("     FROM tweets t inner join users u on t.user_id=u.id                                         ");
+			buf.append("    WHERE user_id = ?                                                                           ");  //第1パラメータ
+			buf.append("       OR user_id = ?                                                                           ");  //第2パラメータ
+			buf.append(" ORDER BY created_at;                                                                           ");
 			
 			ps = con.prepareStatement(buf.toString());
 			
@@ -98,11 +90,13 @@ public class TweetDao {
 
 			// ResultSetオブジェクトからDTOリストに格納
 			while (rs.next()) {
-				TweetDto dto = new TweetDto();
-				dto.setId(rs.getInt("id"));
-				dto.setContent(rs.getString("content"));
-				dto.setTime(rs.getTimestamp("created_at"));
-				timelineTweets.add(dto);
+				TweetDto tweet = new TweetDto();
+				tweet.setId(rs.getInt("t.id"));
+				tweet.setContent(rs.getString("t.content"));
+				tweet.setUser(rs.getInt("t.user_id"));
+				tweet.setTime(rs.getTimestamp("t.created_at"));
+				tweet.setUser_name(rs.getString("u.name"));
+				timelineTweets.add(tweet);
 			}
 
 		} catch (SQLException e) {

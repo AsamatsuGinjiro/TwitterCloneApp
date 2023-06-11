@@ -14,19 +14,15 @@ public class followDao {
 	//-------------------------------------------
 
 	//JDBCドライバの相対パス
-	//※バージョンによって変わる可能性があります（MySQL5系の場合は「com.mysql.jdbc.Driver」）
 	String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
 
 	//接続先のデータベース
-	//※データベース名が「test_db」でない場合は該当の箇所を変更してください
 	String JDBC_URL    = "jdbc:mysql://localhost/test_db?characterEncoding=UTF-8&serverTimezone=Japan&useSSL=false";
 
 	//接続するユーザー名
-	//※ユーザー名が「test_user」でない場合は該当の箇所を変更してください
 	String USER_ID     = "test_user";
 
 	//接続するユーザーのパスワード
-	//※パスワードが「test_pass」でない場合は該当の箇所を変更してください
 	String USER_PASS   = "test_pass";
 	
 	//----------------------------------------------------------------
@@ -34,9 +30,9 @@ public class followDao {
 	//----------------------------------------------------------------
 	/**----------------------------------------------------------------------*
 	 *■getFollowedUserIdsメソッド
-	 *概要　：フォローしているユーザーの情報を抽出
-	 *引数　：対象のアンケートデータ（UserDto型）
-	 *戻り値：実行結果（真：成功、偽：例外発生）
+	 *概要　：カレントユーザーがフォローしているユーザーの情報を抽出
+	 *引数　：対象のアンケートデータ（int型のユーザーID）
+	 *戻り値：followDtoのリスト（カレントユーザーのフォローリスト）
 	 *----------------------------------------------------------------------**/
 	public List<followDto> getFollowedUserIds(int CurrentUserId) {
     	//-------------------------------------------
@@ -51,7 +47,6 @@ public class followDao {
 		//SQL発行
 		//-------------------------------------------
 		//JDBCの接続に使用するオブジェクトを宣言
-		//※finallyブロックでも扱うためtryブロック内で宣言してはいけないことに注意
 		Connection        con = null ;   // Connection（DB接続情報）格納用変数
 		PreparedStatement ps  = null ;   // PreparedStatement（SQL発行用オブジェクト）格納用変数
 		ResultSet         rs  = null ;   // ResultSet（SQL抽出結果）格納用変数
@@ -68,30 +63,26 @@ public class followDao {
 			//SQL文の送信 ＆ 結果の取得
 			//-------------------------------------------
 
-			//発行するSQL文の生成（SELECT）
-			//followsテーブルからカレントユーザーのフォローを抽出
-			StringBuffer buf = new StringBuffer();
-			buf.append(" SELECT id,             ");
-			buf.append("        follower_id,    ");
-			buf.append("        following_id    ");
-			buf.append("   FROM follows         ");
-			buf.append("  WHERE follower_id =?; ");
-			
-			//PreparedStatementを生成＆発行するSQLをセット
-			ps = con.prepareStatement(buf.toString());
-			//パラメータをセット
-			ps.setInt( 1,  CurrentUserId);  //第1パラメータ：カレントユーザーID（セッション入力）
-			//SQL文の送信＆戻り値としてResultSetを取得
-			rs = ps.executeQuery();
-			
-			// ResultSetオブジェクトからDTOリストに格納
-			while (rs.next()) {
-				followDto dto = new followDto();
-				dto.setId(rs.getInt("id"));
-				dto.setFollower_id(rs.getInt("follower_id"));
-				dto.setFollowing_id(rs.getInt("following_id "));
-				followingUserIds.add(dto);
-			}
+			// 発行するSQL文の生成（SELECT）
+	        // followsテーブルからカレントユーザーのフォローを抽出
+	        String sql = "SELECT id, follower_id, following_id FROM follows WHERE follower_id = ?";
+	        
+	        // PreparedStatementを生成＆発行するSQLをセット
+	        ps = con.prepareStatement(sql);
+	        // パラメータをセット
+	        ps.setInt(1, CurrentUserId);  // 第1パラメータ：カレントユーザーID（セッション入力）
+	        
+	        // SQL文の送信＆戻り値としてResultSetを取得
+	        rs = ps.executeQuery();
+	        
+	        // ResultSetオブジェクトからDTOリストに格納
+	        while (rs.next()) {
+	            followDto dto = new followDto();
+	            dto.setId(rs.getInt("id"));
+	            dto.setFollower_id(rs.getInt("follower_id"));
+	            dto.setFollowing_id(rs.getInt("following_id"));
+	            followingUserIds.add(dto);
+	        }
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

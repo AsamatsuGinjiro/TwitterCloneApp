@@ -3,7 +3,9 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List"      %>
 <%@ page import="model.TweetDto"      %>
-<%@ page import="model.followDto"      %>
+<%@ page import="model.followDto"     %>
+<%@ page import="model.UserDto"       %>
+
 
 
 <%--
@@ -19,7 +21,6 @@
 List<TweetDto> tweet_list = (List<TweetDto>)request.getAttribute("TWEET_LIST");
 List<followDto> follow_list = (List<followDto>)request.getAttribute("FOLLOW_LIST");
 int current_user = (int)request.getAttribute("USER_NUMBER");
-
 %>
 
 
@@ -31,34 +32,21 @@ int current_user = (int)request.getAttribute("USER_NUMBER");
     <textarea name="TWEET" rows="4" cols="50" maxlength = "250" id="ID_TWEET"></textarea>
     <input type="submit" value="ツイートする" id="ID_SUBMIT">
     <br>
-    <!-- テスト用 -->
-    <!-- リストが空になっており、データ抽出がうまくいっていない -->
-    <div>
-      <p>
-        <%=follow_list %>
-      </p>
-      <p>
-        <%=tweet_list %>
-      </p>
-      <p>
-        <%=current_user %>
-      </p>
-    </div>
-    <!-- テスト用 -->
 <%
     for (int i = 0; i < tweet_list.size(); i++) {
-    	TweetDto dto = tweet_list.get(i);
-%>    <div>
+    	TweetDto tweet_dto = tweet_list.get(i);
+%>    <article>
         <div>
-          <span><%= dto.getUser().getUsername() %></span>
-          <span><%= dto.getUser().getId() %></span>
-          <span><%= dto.getTime() %></span>
+          <span><%= tweet_dto.getUser_name() %></span>
+          <span>@<%= tweet_dto.getUser() %></span>
+          <span><%= tweet_dto.getTime() %></span>
         </div>
         <br>
         <div>
-          <td><%= dto.getContent() %></td>
+          <p><%= tweet_dto.getContent() %> <p>
         </div>
-      </div>
+        <p>---------------------------------</p>
+      </article>
       <br>
 <%
     }
