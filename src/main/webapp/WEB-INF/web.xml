@@ -47,5 +47,23 @@
 		<servlet-name>Logout</servlet-name>
 		<url-pattern>/Logout</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>CreateTweet</servlet-name>
+		<servlet-class>controller.CreateTweet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CreateTweet</servlet-name>
+		<url-pattern>/CreateTweet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>InputTweet</servlet-name>
+		<servlet-class>controller.InputTweet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InputTweet</servlet-name>
+		<url-pattern>/InputTweet</url-pattern>
+	</servlet-mapping>
 
 </web-app>

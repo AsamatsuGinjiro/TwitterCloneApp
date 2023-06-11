@@ -139,13 +139,117 @@ public class TweetDao {
 		
     }
     
-    public void createTweet(UserDto user, String content) {
+    public boolean createTweet(int CurrentUser, String Content) {
         // 新しい投稿をデータベースに保存する処理を実装
         // クエリを組み立ててデータベースに投稿を保存する
         // ユーザーと投稿内容をデータベースに挿入する
         // データベース処理などを実行
         // INSERT INTO tweets (user_id, content) VALUES (:userId, :content)
-    }
+    	
+    	//-------------------------------------------
+    	//JDBCドライバのロード
+    	//-------------------------------------------
+    	try {
+    		Class.forName(DRIVER_NAME);       //JDBCドライバをロード＆接続先として指定
+    	} catch (ClassNotFoundException e) {
+    		e.printStackTrace();
+    	}
+    	
+		//-------------------------------------------
+		//SQL発行
+		//-------------------------------------------
+		//JDBCの接続に使用するオブジェクトを宣言
+		Connection        con = null ;   // Connection（DB接続情報）格納用変数
+		PreparedStatement ps  = null ;   // PreparedStatement（SQL発行用オブジェクト）格納用変数
+		// 実行結果（真：成功、偽：例外発生）格納用変数
+		boolean isSuccess = true;
+		try {
+
+			// -------------------------------------------
+			// 接続の確立（Connectionオブジェクトの取得）
+			// -------------------------------------------
+			con = DriverManager.getConnection(JDBC_URL, USER_ID, USER_PASS);
+
+			// -------------------------------------------
+			// トランザクションの開始
+			// -------------------------------------------
+			// オートコミットをオフにする（トランザクション開始）
+			con.setAutoCommit(false);
+			
+			// -------------------------------------------
+			// SQL文の送信 ＆ 結果の取得
+			// -------------------------------------------
+			String sql = "INSERT INTO tweets (user_id, content) VALUES (?, ?)";
+	        // PreparedStatementを生成＆発行するSQLをセット
+	        ps = con.prepareStatement(sql);
+	        // パラメータをセット
+	        ps.setInt(1, CurrentUser);  // 第1パラメータ：カレントユーザーID（セッション入力）
+	        // パラメータをセット
+	        ps.setString(2, Content);  // 第2パラメータ：ツイート文（ユーザー入力）
+	        
+			// SQL文の実行
+			ps.executeUpdate();
+		    // トランザクションのコミット
+		    con.commit();
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		    // トランザクションのロールバック
+		    try {
+				con.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			// 実行結果を例外発生として更新
+			isSuccess = false;
+		}finally {
+			// -------------------------------------------
+			// トランザクションの終了
+			// -------------------------------------------
+			if (isSuccess) {
+				// 明示的にコミットを実施
+				try {
+					con.commit();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+			} else {
+				// 明示的にロールバックを実施
+				try {
+					con.rollback();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// -------------------------------------------
+			// 接続の解除
+			// -------------------------------------------
+
+			// PreparedStatementオブジェクトの接続解除
+			if (ps != null) { // 接続が確認できている場合のみ実施
+				try {
+					ps.close(); // 接続の解除
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// Connectionオブジェクトの接続解除
+			if (con != null) { // 接続が確認できている場合のみ実施
+				try {
+					con.close(); // 接続の解除
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+		// 実行結果を返す
+		return isSuccess;
+	}
 
     public List<TweetDto> getUserTweets(UserDto user) {
         // ユーザーの投稿をデータベースから取得する処理を実装

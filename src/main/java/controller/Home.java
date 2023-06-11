@@ -43,9 +43,10 @@ public class Home extends HttpServlet {
 			follow_list                 = logic.getfollowingList(userInfoOnSession.getId());
 			
 			//「tweets」テーブルのデータを抽出
-			List<TweetDto> tweet_list   = new ArrayList<TweetDto>();
-			for(int i=0; i<follow_list.size(); i++) {
-				tweet_list              = logic.getTimelineTweets(follow_list.get(i).getFollower_id(),follow_list.get(i).getFollowing_id());
+			List<TweetDto> tweet_list = new ArrayList<TweetDto>();
+			for(int i = 0; i < follow_list.size(); i++) {
+			    List<TweetDto> tweets = logic.getTimelineTweets(follow_list.get(i).getFollower_id(), follow_list.get(i).getFollowing_id());
+			    tweet_list.addAll(tweets);
 			}
 
 			//tweetsの抽出結果をリクエストスコープに保存

@@ -6,7 +6,7 @@ public class HomeBL {
 	/**----------------------------------------------------------------------*
 	 *■getTimelineTweetsメソッド
 	 *概要　：タイムラインを抽出する
-	 *引数　：なし
+	 *引数　：CurrentUser,FollowingUser
 	 *戻り値：抽出結果（TweetDtoリスト）
 	 *----------------------------------------------------------------------**/
 	public List<TweetDto> getTimelineTweets(int CurrentUser,int FollowingUser) {	
@@ -23,7 +23,7 @@ public class HomeBL {
 	/**----------------------------------------------------------------------*
 	 *■getfollowListメソッド
 	 *概要　：カレントユーザーのフォローリストを抽出する
-	 *引数　：なし
+	 *引数　：CurrentUser
 	 *戻り値：抽出結果（followDtoリスト）
 	 *----------------------------------------------------------------------**/
 	public List<followDto> getfollowingList(int CurrentUser){
@@ -36,4 +36,6 @@ public class HomeBL {
 		
 		return dtoList;
 	}
+	
+
 }

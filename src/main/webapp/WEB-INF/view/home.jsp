@@ -5,9 +5,6 @@
 <%@ page import="model.TweetDto"      %>
 <%@ page import="model.followDto"     %>
 <%@ page import="model.UserDto"       %>
-
-
-
 <%--
 -------------------------------------------------------------------------------------------------
 ■■■ファイル名：home.jsp■■■
@@ -22,15 +19,13 @@ List<TweetDto> tweet_list = (List<TweetDto>)request.getAttribute("TWEET_LIST");
 List<followDto> follow_list = (List<followDto>)request.getAttribute("FOLLOW_LIST");
 int current_user = (int)request.getAttribute("USER_NUMBER");
 %>
-
-
+<!DOCTYPE html>
 <html>
   <head>
     <title>タイムライン</title>
   </head>
   <body>
-    <textarea name="TWEET" rows="4" cols="50" maxlength = "250" id="ID_TWEET"></textarea>
-    <input type="submit" value="ツイートする" id="ID_SUBMIT">
+    <a href="<%=request.getContextPath()%>/InputTweet">ツイートする</a>
     <br>
 <%
     for (int i = 0; i < tweet_list.size(); i++) {
@@ -45,6 +40,7 @@ int current_user = (int)request.getAttribute("USER_NUMBER");
         <div>
           <p><%= tweet_dto.getContent() %> <p>
         </div>
+        <%--あとでCSS当てたら削除する --%>
         <p>---------------------------------</p>
       </article>
       <br>
